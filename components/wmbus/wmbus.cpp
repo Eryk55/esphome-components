@@ -121,27 +121,6 @@ void WMBusComponent::led_handler() {
   }
 }
 
-const LogString *WMBusComponent::format_to_string(Format format) {
-  switch (format) {
-    case FORMAT_HEX:
-      return LOG_STR("hex");
-    case FORMAT_RTLWMBUS:
-      return LOG_STR("rtl-wmbus");
-    default:
-      return LOG_STR("unknown");
-  }
-}
-
-const LogString *WMBusComponent::transport_to_string(Transport transport) {
-  switch (transport) {
-    case TRANSPORT_TCP:
-      return LOG_STR("TCP");
-    case TRANSPORT_UDP:
-      return LOG_STR("UDP");
-    default:
-      return LOG_STR("unknown");
-  }
-}
 
 void WMBusComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "wM-Bus v%s: [init]", MY_VERSION);

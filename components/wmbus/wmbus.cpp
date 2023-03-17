@@ -43,6 +43,7 @@ void WMBusComponent::setup() {
   this->add_driver(new ApatorEITN());
   this->add_driver(new Hydrocalm3());
   this->add_driver(new FhkvdataIII());
+  ESP_LOGI(TAG, "CC1101 initialization OK. Waiting for telegrams...");
 }
 
 void WMBusComponent::loop() {

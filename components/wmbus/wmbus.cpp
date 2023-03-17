@@ -92,10 +92,6 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
   return ret_val;
 }
 
-void WMBusComponent::register_wmbus_listener(WMBusListener *listener) {
-  this->wmbus_listeners_[listener->id] = listener;
-}
-
 void WMBusComponent::add_driver(Driver *driver) {
   this->drivers_[driver->get_name()] = driver;
 }

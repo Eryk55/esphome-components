@@ -15,7 +15,6 @@ from esphome.const import (
     CONF_IP_ADDRESS,
     CONF_PORT,
     CONF_FORMAT,
-    CONF_TIME_ID,
 )
 
 CONF_TRANSPORT = "transport"
@@ -124,9 +123,6 @@ async def to_code(config):
     gdo2 = await cg.gpio_pin_expression(config[CONF_GDO2_PIN])
 
     cg.add(var.add_cc1101(mosi, miso, clk, cs, gdo0, gdo2))
-
-    time = await cg.get_variable(config[CONF_TIME_ID])
-    cg.add(var.set_time(time))
 
     for conf in config.get(CONF_CLIENTS, []):
         cg.add(var.add_client(conf[CONF_NAME],

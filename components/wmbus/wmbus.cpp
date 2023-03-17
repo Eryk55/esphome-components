@@ -145,17 +145,6 @@ const LogString *WMBusComponent::transport_to_string(Transport transport) {
 
 void WMBusComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "wM-Bus v%s: [init]", MY_VERSION);
-  if (this->clients_.size() > 0) {
-    ESP_LOGCONFIG(TAG, "  Clients:");
-    for (auto & client : this->clients_) {
-      ESP_LOGCONFIG(TAG, "    %s: %s:%d %s [%s]",
-                    client.name.c_str(),
-                    client.ip.str().c_str(),
-                    client.port,
-                    LOG_STR_ARG(transport_to_string(client.transport)),
-                    LOG_STR_ARG(format_to_string(client.format)));
-    }
-  }
   if (this->led_pin_ != nullptr) {
     ESP_LOGCONFIG(TAG, "  LED:");
     LOG_PIN("    Pin: ", this->led_pin_);

@@ -60,8 +60,6 @@ void WMBusComponent::loop() {
                         ((uint32_t)frame[5] << 8)  | ((uint32_t)frame[4]);
 
     ESP_LOGD(TAG, "Meter ID [0x%08X] RSSI: %d dBm LQI: %d T: %s", meter_id, rssi_dbm, lqi, telegram.c_str());
-    telegram.erase(telegram.size() - 5);
-    Serial.printf("T1;1;1;;%d;;;0x%s\n", rssi_dbm, telegram.c_str());
     this->led_blink();
     memset(this->mb_packet_, 0, sizeof(this->mb_packet_));
   }

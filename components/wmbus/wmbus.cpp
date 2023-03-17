@@ -59,7 +59,7 @@ void WMBusComponent::loop() {
     uint32_t meter_id = ((uint32_t)frame[7] << 24) | ((uint32_t)frame[6] << 16) |
                         ((uint32_t)frame[5] << 8)  | ((uint32_t)frame[4]);
 
-    ESP_LOGD(TAG, "Meter ID [0x%08X] RSSI: %d dBm LQI: %d T: %s", meter_id, rssi_dbm, lqi, telegram.c_str());
+    ESP_LOGI(TAG, "Meter ID [0x%08X] RSSI: %d dBm LQI: %d T: %s", meter_id, rssi_dbm, lqi, telegram.c_str());
     this->led_blink();
     memset(this->mb_packet_, 0, sizeof(this->mb_packet_));
   }

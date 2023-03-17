@@ -5,7 +5,6 @@
 #include "esphome/core/helpers.h"
 #include "esphome/core/component.h"
 #include "esphome/components/network/ip_address.h"
-#include "esphome/components/time/real_time_clock.h"
 
 #include <map>
 #include <string>
@@ -83,7 +82,6 @@ class WMBusComponent : public Component {
       this->spi_conf_.gdo0 = gdo0;
       this->spi_conf_.gdo2 = gdo2;
     }
-    void set_time(time::RealTimeClock *time) { this->time_ = time; }
     void add_client(const std::string name,
                     const network::IPAddress ip,
                     const uint16_t port,
@@ -110,7 +108,6 @@ class WMBusComponent : public Component {
     std::vector<Client> clients_{};
     WiFiClient tcp_client_;
     WiFiUDP udp_client_;
-    time::RealTimeClock *time_;
     uint32_t led_blink_time_{0};
     uint32_t led_on_millis_{0};
     bool led_on_{false};

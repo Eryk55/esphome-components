@@ -31,8 +31,6 @@ CONF_METER_ID = "meter_id"
 
 CODEOWNERS = ["@SzczepanLeon"]
 
-DEPENDENCIES = ["time"]
-
 wmbus_ns = cg.esphome_ns.namespace('wmbus')
 WMBusComponent = wmbus_ns.class_('WMBusComponent', cg.Component)
 WMBusListener = wmbus_ns.class_('WMBusListener', cg.Component)
@@ -98,7 +96,6 @@ TEXT_LISTENER_SCHEMA = cv.Schema(
 
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(WMBusComponent),
-    cv.GenerateID(CONF_TIME_ID): cv.use_id(time.RealTimeClock),
     cv.Optional(CONF_MOSI_PIN, default=13): pins.internal_gpio_output_pin_schema,
     cv.Optional(CONF_MISO_PIN, default=12): pins.internal_gpio_input_pin_schema,
     cv.Optional(CONF_CLK_PIN,  default=14): pins.internal_gpio_output_pin_schema,
@@ -106,7 +103,7 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_GDO0_PIN, default=5):  pins.internal_gpio_input_pin_schema,
     cv.Optional(CONF_GDO2_PIN, default=4):  pins.internal_gpio_input_pin_schema,
     cv.Optional(CONF_LED_PIN): pins.gpio_output_pin_schema,
-    cv.Optional(CONF_LED_BLINK_TIME, default="300ms"): cv.positive_time_period,
+    cv.Optional(CONF_LED_BLINK_TIME, default="1s"): cv.positive_time_period,
     cv.Optional(CONF_CLIENTS):  cv.ensure_list(CLIENT_SCHEMA),
 })
 

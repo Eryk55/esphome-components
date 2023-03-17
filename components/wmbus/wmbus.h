@@ -72,9 +72,7 @@ class WMBusComponent : public Component {
     GPIOPin *led_pin_{nullptr};
     Cc1101 spi_conf_{};
     uint8_t mb_packet_[291];
-    std::map<uint32_t, WMBusListener *> wmbus_listeners_{};
     std::map<std::string, Driver *> drivers_{};
-    std::vector<Client> clients_{};
     uint32_t led_blink_time_{0};
     uint32_t led_on_millis_{0};
     bool led_on_{false};

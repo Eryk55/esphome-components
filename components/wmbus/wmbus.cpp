@@ -109,7 +109,7 @@ void WMBusComponent::loop() {
                 meter_id,
                 mbus_data.rssi,
                 mbus_data.lqi,
-                mode_to_string(mbus_data.mode).c_str(),
+                mode_to_string(mbus_data.framemode).c_str(),
                 telegram.c_str());
       }
     }

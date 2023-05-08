@@ -113,9 +113,6 @@ void WMBusComponent::loop() {
                 telegram.c_str());
       }
     }
-    if (!(this->clients_.empty())) {
-      this->led_blink();
-    }
   }
 }
 

@@ -70,8 +70,6 @@ class WMBusComponent : public Component {
   private:
 
   protected:
-    const LogString *format_to_string(Format format);
-    const LogString *transport_to_string(Transport transport);
     void add_driver(Driver *driver);
     bool decrypt_telegram(std::vector<unsigned char> &telegram, std::vector<unsigned char> &key);
     void led_blink();

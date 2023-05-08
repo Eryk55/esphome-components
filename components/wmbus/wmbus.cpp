@@ -198,41 +198,8 @@ void WMBusComponent::led_handler() {
   }
 }
 
-const LogString *WMBusComponent::format_to_string(Format format) {
-  switch (format) {
-    case FORMAT_HEX:
-      return LOG_STR("hex");
-    case FORMAT_RTLWMBUS:
-      return LOG_STR("rtl-wmbus");
-    default:
-      return LOG_STR("unknown");
-  }
-}
-
-const LogString *WMBusComponent::transport_to_string(Transport transport) {
-  switch (transport) {
-    case TRANSPORT_TCP:
-      return LOG_STR("TCP");
-    case TRANSPORT_UDP:
-      return LOG_STR("UDP");
-    default:
-      return LOG_STR("unknown");
-  }
-}
-
 void WMBusComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "wM-Bus v2 [init]");
-  if (this->clients_.size() > 0) {
-    ESP_LOGCONFIG(TAG, "  Clients:");
-    for (auto & client : this->clients_) {
-      ESP_LOGCONFIG(TAG, "    %s: %s:%d %s [%s]",
-                    client.name.c_str(),
-                    client.ip.str().c_str(),
-                    client.port,
-                    LOG_STR_ARG(transport_to_string(client.transport)),
-                    LOG_STR_ARG(format_to_string(client.format)));
-    }
-  }
   if (this->led_pin_ != nullptr) {
     ESP_LOGCONFIG(TAG, "  LED:");
     LOG_PIN("    Pin: ", this->led_pin_);
@@ -246,15 +213,8 @@ void WMBusComponent::dump_config() {
   LOG_PIN("    GDO0 Pin: ", this->spi_conf_.gdo0);
   LOG_PIN("    GDO2 Pin: ", this->spi_conf_.gdo2);
   if (this->drivers_.size() > 0) {
-    std::string drivers = "  ";
-    for (const auto& element : this->drivers_) {
-      drivers += element.first + ", ";
-    }
-    drivers.erase(drivers.size() - 2);
-    ESP_LOGCONFIG(TAG, "  Available drivers:%s", drivers.c_str());
-    for (const auto &ele : this->wmbus_listeners_) {
-      ele.second->dump_config();
-    }
+    ESP_LOGCONFIG(TAG, "  Log output only.");
+
   }
   else {
     ESP_LOGE(TAG, "  Check connection to CC1101!");

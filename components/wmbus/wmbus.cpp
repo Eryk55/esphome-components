@@ -133,7 +133,7 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
   int num_encrypted_bytes = 0;
   int num_not_encrypted_at_end = 0;
 
-  ESP_LOGD(TAG, "IV:   %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
+  ESP_LOGD(TAG, "  IV %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
     iv[0], iv[1], iv[2], iv[3], iv[4], iv[5], iv[6], iv[7], iv[8], iv[9], iv[10], iv[11], iv[12], iv[13], iv[14], iv[15]);
 
   if (decrypt_TPL_AES_CBC_IV(telegram, pos, key, iv,

@@ -133,7 +133,7 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
   int num_not_encrypted_at_end = 0;
 
 for (int iii=0; iii <16; iii++) {
-  ESP_LOGD(TAG, "      0x%02X", iv[iii);
+  ESP_LOGD(TAG, "      0x%02X", iv[iii]);
 }
 
   if (decrypt_TPL_AES_CBC_IV(telegram, pos, key, iv,

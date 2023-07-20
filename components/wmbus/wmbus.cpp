@@ -102,16 +102,17 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
   pos = telegram.begin() + 10;
   ESP_LOGD(TAG, "  CI 0x%02X", *pos);
   // data offset
-  if ((offset == 0x67) || (offset == 0x6E) || (offset == 0x74) || (offset == 0x7A) || (offset == 0x7D) || (offset == 0x7F) || (offset == 0x9E)) {
+  if ((pos == 0x67) || (pos == 0x6E) || (pos == 0x74) || (pos == 0x7A) || (pos == 0x7D) || (pos == 0x7F) || (pos == 0x9E)) {
     ESP_LOGD(TAG, "  CI short");
     offset = 15;
   }
-  else if ((offset == 0x68) || (offset == 0x6F) || (offset == 0x72) || (offset == 0x75) || (offset == 0x7C) || (offset == 0x7E) || (offset == 0x9F)) {
+  else if ((pos == 0x68) || (pos == 0x6F) || (pos == 0x72) || (pos == 0x75) || (pos == 0x7C) || (pos == 0x7E) || (pos == 0x9F)) {
     ESP_LOGD(TAG, "  CI long");
     offset = 23;
   }
   else {
     ESP_LOGD(TAG, "  CI unknown");
+    offset = 15;
   }
   
   unsigned char iv[16];

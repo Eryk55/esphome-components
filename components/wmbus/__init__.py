@@ -26,7 +26,7 @@ CONF_METER_ID = "meter_id"
 CODEOWNERS = ["@SzczepanLeon"]
 
 wmbus_ns = cg.esphome_ns.namespace('wmbus')
-WMBusComponent = wmbus_ns.class_('WMBusComponent', cg.Component)
+WMBusComponent = wmbus_ns.class_('WMBusComponent', cg.PollingComponent)
 
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(WMBusComponent),
@@ -38,7 +38,7 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_GDO2_PIN, default=4):  pins.internal_gpio_input_pin_schema,
     cv.Optional(CONF_LED_PIN): pins.gpio_output_pin_schema,
     cv.Optional(CONF_LED_BLINK_TIME, default="1s"): cv.positive_time_period,
-})
+}).extend(cv.polling_component_schema("60s"))
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])

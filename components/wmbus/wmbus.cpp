@@ -111,49 +111,51 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
     ESP_LOGD(TAG, "  CI short");
     offset = 15;
 
+    // dll-mfct + dll-id + dll-version + dll-type
     for (int j=0; j<8; ++j) {
       iv[i++] = telegram[2+j];
     }
+    // tpl-acc
     for (int j=0; j<8; ++j) {
       iv[i++] = telegram[11];
     }
   }
   else if ((*pos == 0x68) || (*pos == 0x6F) || (*pos == 0x72) || (*pos == 0x75) || (*pos == 0x7C) || (*pos == 0x7E) || (*pos == 0x9F)) {
     ESP_LOGD(TAG, "  CI long");
-    uint32_t meter_id = ((uint32_t)telegram[7] << 24) | ((uint32_t)telegram[6] << 16) |
-                        ((uint32_t)telegram[5] << 8)  | ((uint32_t)telegram[4]);
-    uint32_t tpl_id = ((uint32_t)telegram[14] << 24) | ((uint32_t)telegram[13] << 16) |
-                        ((uint32_t)telegram[12] << 8)  | ((uint32_t)telegram[11]);
-    ESP_LOGI(TAG, "Meter ID [0x%08X] [0x%08X]", meter_id, tpl_id);
+    // uint32_t meter_id = ((uint32_t)telegram[7] << 24) | ((uint32_t)telegram[6] << 16) |
+    //                     ((uint32_t)telegram[5] << 8)  | ((uint32_t)telegram[4]);
+    // uint32_t tpl_id = ((uint32_t)telegram[14] << 24) | ((uint32_t)telegram[13] << 16) |
+    //                     ((uint32_t)telegram[12] << 8)  | ((uint32_t)telegram[11]);
+    // ESP_LOGI(TAG, "Meter ID [0x%08X] [0x%08X]", meter_id, tpl_id);
     offset = 23;
 
+    // tpl-mfct
     for (int j=0; j<2; ++j) {
-      iv[i++] = telegram[2+j];
+      iv[i++] = telegram[15+j];
     }
-    
+    // tpl-id
     for (int j=0; j<4; ++j) {
       iv[i++] = telegram[11+j];
     }
+    // tpl-version + tpl-type
     for (int j=0; j<2; ++j) {
       iv[i++] = telegram[17+j];
     }
-    
-    // ACC
+    // tpl-acc
     for (int j=0; j<8; ++j) {
       iv[i++] = telegram[19];
     }
   }
   else {
-    ESP_LOGD(TAG, "  CI unknown");
-    offset = 15;
+    ESP_LOGE(TAG, "  CI unknown");
   }
 
   pos = telegram.begin() + offset;
   int num_encrypted_bytes = 0;
   int num_not_encrypted_at_end = 0;
 
-  ESP_LOGD(TAG, "  IV %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
-    iv[0], iv[1], iv[2], iv[3], iv[4], iv[5], iv[6], iv[7], iv[8], iv[9], iv[10], iv[11], iv[12], iv[13], iv[14], iv[15]);
+  // ESP_LOGD(TAG, "  IV %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
+  //   iv[0], iv[1], iv[2], iv[3], iv[4], iv[5], iv[6], iv[7], iv[8], iv[9], iv[10], iv[11], iv[12], iv[13], iv[14], iv[15]);
 
   if (decrypt_TPL_AES_CBC_IV(telegram, pos, key, iv,
                             &num_encrypted_bytes, &num_not_encrypted_at_end)) {

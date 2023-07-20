@@ -13,20 +13,13 @@ void WMBusComponent::setup() {
     this->led_pin_->digital_write(false);
     this->led_on_ = false;
   }
-  if (!rf_mbus_.init(this->spi_conf_.mosi->get_pin(), this->spi_conf_.miso->get_pin(),
-                     this->spi_conf_.clk->get_pin(), this->spi_conf_.cs->get_pin(),
-                     this->spi_conf_.gdo0->get_pin(), this->spi_conf_.gdo2->get_pin())) {
-    this->mark_failed();
-    ESP_LOGE(TAG, "CC1101 initialization failed.");
-    return;
-  }
 
   this->add_driver(new Izar());
 }
 
-void WMBusComponent::loop() {
+void WMBusComponent::update() {
   this->led_handler();
-  if (rf_mbus_.task()) {
+  if (true) {
     WMbusFrame mbus_data = rf_mbus_.get_frame();
     std::vector<unsigned char> frame = mbus_data.frame;
     std::string telegram = format_hex_pretty(frame);
@@ -42,9 +35,9 @@ void WMBusComponent::loop() {
       ESP_LOGI(TAG, "Using driver '%s' for ID [0x%08X] RSSI: %d dBm LQI: %d Mode: %s T: %s",
                selected_driver->get_name().c_str(),
                meter_id,
-               mbus_data.rssi,
-               mbus_data.lqi,
-               mode_to_string(mbus_data.framemode).c_str(),
+               0,
+               0,
+               "X",
                telegram.c_str());
       if (sensor->key.size()) {
         if (this->decrypt_telegram(frame, sensor->key)) {

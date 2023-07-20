@@ -132,6 +132,10 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
   int num_encrypted_bytes = 0;
   int num_not_encrypted_at_end = 0;
 
+for (int iii=0; iii <16, iii++) {
+  ESP_LOGD(TAG, "      0x%02X", iv[iii);
+}
+
   if (decrypt_TPL_AES_CBC_IV(telegram, pos, key, iv,
                             &num_encrypted_bytes, &num_not_encrypted_at_end)) {
     uint32_t decrypt_check = 0x2F2F;

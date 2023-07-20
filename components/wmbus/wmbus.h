@@ -64,7 +64,7 @@ class WMBusComponent : public PollingComponent {
 
   protected:
     void add_driver(Driver *driver);
-    bool decrypt_telegram(std::vector<unsigned char> &telegram, std::vector<unsigned char> &key);
+    bool decrypt_telegram(std::vector<unsigned char> &telegram, std::vector<unsigned char> &key, int offset = 0);
     void led_blink();
     void led_handler();
     HighFrequencyLoopRequester high_freq_;

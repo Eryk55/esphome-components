@@ -47,6 +47,7 @@ class WMBusComponent : public PollingComponent {
     void dump_config() override;
     float get_setup_priority() const override { return setup_priority::LATE; }
     void set_led_pin(GPIOPin *led) { this->led_pin_ = led; }
+    void register_wmbus_listener(WMBusListener *listener);
     void set_led_blink_time(uint32_t led_blink_time) { this->led_blink_time_ = led_blink_time; }
     void add_cc1101(InternalGPIOPin *mosi, InternalGPIOPin *miso,
                     InternalGPIOPin *clk, InternalGPIOPin *cs,

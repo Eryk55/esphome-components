@@ -81,8 +81,8 @@ void WMBusComponent::update() {
             key.erase(key.size() - 5);
           }
           ESP_LOGE(TAG, "Something was not OK during decrypting telegram for ID [0x%08X] '%s' key: '%s'", meter_id, selected_driver->get_name().c_str(), key.c_str());
-          //ESP_LOGE(TAG, "T : %s", telegram.c_str());
-          //ESP_LOGE(TAG, "T': %s", decrypted_telegram.c_str());
+          ESP_LOGE(TAG, "T : %s", telegram.c_str());
+          ESP_LOGE(TAG, "T': %s", decrypted_telegram.c_str());
         }
       }
       if (selected_driver->get_value(frame, value)) {
@@ -103,11 +103,17 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
   // data offset
   int offset = 0;
   if ((offset == 0x67) || (offset == 0x6E) || (offset == 0x74) || (offset == 0x7A) || (offset == 0x7D) || (offset == 0x7F) || (offset == 0x9E)) {
+    ESP_LOGD(TAG, "  CI short");
     offset = 15;
   }
   else if ((offset == 0x68) || (offset == 0x6F) || (offset == 0x72) || (offset == 0x75) || (offset == 0x7C) || (offset == 0x7E) || (offset == 0x9F)) {
+    ESP_LOGD(TAG, "  CI long");
     offset = 23;
   }
+  else {
+    ESP_LOGD(TAG, "  CI unknown");
+  }
+  
   unsigned char iv[16];
   int i=0;
   for (int j=0; j<8; ++j) {

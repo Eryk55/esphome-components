@@ -39,13 +39,11 @@ void WMBusComponent::setup() {
   ESP_LOGI(TAG, "CC1101 initialization OK. Waiting for telegrams...");
 }
 
-void WMBusComponent::loop() {
+void WMBusComponent::update() {
   this->led_handler();
-  int8_t rssi_dbm{0};
-  uint8_t lqi{0};
-  if (false) {
-    uint8_t len_without_crc = crcRemove(this->mb_packet_, packetSize(this->mb_packet_[0]));
-    std::vector<unsigned char> frame(this->mb_packet_, this->mb_packet_ + len_without_crc);
+  ESP_LOGI(TAG, "Aqq %d", 123);
+  if (true) {
+    std::vector<unsigned char> frame = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     std::string telegram = format_hex_pretty(frame);
     telegram.erase(std::remove(telegram.begin(), telegram.end(), '.'), telegram.end());
 
@@ -53,9 +51,8 @@ void WMBusComponent::loop() {
     uint32_t meter_id = ((uint32_t)frame[7] << 24) | ((uint32_t)frame[6] << 16) |
                         ((uint32_t)frame[5] << 8)  | ((uint32_t)frame[4]);
 
-    ESP_LOGI(TAG, "Meter ID [0x%08X] RSSI: %d dBm LQI: %d T: %s", meter_id, rssi_dbm, lqi, telegram.c_str());
+    ESP_LOGI(TAG, "Meter ID [0x%08X] T: %s", meter_id, telegram.c_str());
     this->led_blink();
-    memset(this->mb_packet_, 0, sizeof(this->mb_packet_));
   }
 }
 

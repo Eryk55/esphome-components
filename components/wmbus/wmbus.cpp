@@ -100,7 +100,7 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
   std::vector<unsigned char>::iterator pos;
   // CI
   pos = telegram.begin() + 10;
-  ESP_LOGD(TAG, "  CI 0x%02X", pos);
+  ESP_LOGD(TAG, "  CI 0x%02X", *pos);
   // data offset
   if ((offset == 0x67) || (offset == 0x6E) || (offset == 0x74) || (offset == 0x7A) || (offset == 0x7D) || (offset == 0x7F) || (offset == 0x9E)) {
     ESP_LOGD(TAG, "  CI short");

@@ -65,6 +65,7 @@ void WMBusComponent::update() {
       auto *sensor = this->wmbus_listeners_[meter_id];
       auto selected_driver = this->drivers_[sensor->type];
       ESP_LOGI(TAG, "Using driver '%s' for ID [0x%08X] T: %s", selected_driver->get_name().c_str(), meter_id, telegram.c_str());
+      float value{0};
       if (sensor->key.size()) {
         if (this->decrypt_telegram(frame, sensor->key)) {
           std::string decrypted_telegram = format_hex_pretty(frame);
@@ -84,7 +85,12 @@ void WMBusComponent::update() {
           //ESP_LOGE(TAG, "T': %s", decrypted_telegram.c_str());
         }
       }
-      //
+      if (selected_driver->get_value(frame, value)) {
+        ESP_LOGI(TAG, "Value from telegram [0x%08X]: %l", meter_id, value);
+      }
+      else {
+        ESP_LOGE(TAG, "Can't get value from telegram for ID [0x%08X] '%s'", meter_id, selected_driver->get_name().c_str());
+      }
     }
   }
 }

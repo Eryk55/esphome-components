@@ -40,6 +40,16 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_LED_BLINK_TIME, default="1s"): cv.positive_time_period,
 }).extend(cv.polling_component_schema("60s"))
 
+
+METER_LISTENER_SCHEMA = cv.Schema(
+    {
+        cv.GenerateID(CONF_WMBUS_ID): cv.use_id(WMBusComponent),
+        cv.Required(CONF_METER_ID): cv.hex_int,
+        cv.Optional(CONF_TYPE, default="unknown"): cv.string_strict,
+        cv.Optional(CONF_KEY, default=""): my_key,
+    }
+)
+
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)

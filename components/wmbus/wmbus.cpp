@@ -103,9 +103,20 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
   pos = telegram.begin() + 10;
   ESP_LOGD(TAG, "  CI 0x%02X", *pos);
   // data offset
+
+  unsigned char iv[16];
+  int i=0;
+  
   if ((*pos == 0x67) || (*pos == 0x6E) || (*pos == 0x74) || (*pos == 0x7A) || (*pos == 0x7D) || (*pos == 0x7F) || (*pos == 0x9E)) {
     ESP_LOGD(TAG, "  CI short");
     offset = 15;
+
+    for (int j=0; j<8; ++j) {
+      iv[i++] = telegram[2+j];
+    }
+    for (int j=0; j<8; ++j) {
+      iv[i++] = telegram[11];
+    }
   }
   else if ((*pos == 0x68) || (*pos == 0x6F) || (*pos == 0x72) || (*pos == 0x75) || (*pos == 0x7C) || (*pos == 0x7E) || (*pos == 0x9F)) {
     ESP_LOGD(TAG, "  CI long");
@@ -115,20 +126,25 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
                         ((uint32_t)telegram[12] << 8)  | ((uint32_t)telegram[11]);
     ESP_LOGI(TAG, "Meter ID [0x%08X] [0x%08X]", meter_id, tpl_id);
     offset = 23;
+
+    for (int j=0; j<2; ++j) {
+      iv[i++] = telegram[2+j];
+    }
+    
+    for (int j=0; j<6; ++j) {
+      iv[i++] = telegram[11+j];
+    }
+    
+    // ACC
+    for (int j=0; j<8; ++j) {
+      iv[i++] = telegram[19];
+    }
   }
   else {
     ESP_LOGD(TAG, "  CI unknown");
     offset = 15;
   }
-  
-  unsigned char iv[16];
-  int i=0;
-  for (int j=0; j<8; ++j) {
-    iv[i++] = telegram[2+j];
-  }
-  for (int j=0; j<8; ++j) {
-    iv[i++] = telegram[11];
-  }
+
   pos = telegram.begin() + offset;
   int num_encrypted_bytes = 0;
   int num_not_encrypted_at_end = 0;

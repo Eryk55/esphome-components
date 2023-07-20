@@ -61,5 +61,5 @@ async def to_code(config):
     cg.add_library(
         None,
         None,
-        "https://github.com/SzczepanLeon/wMbus-lib@1.1.1",
+        "https://github.com/Eryk55/wMbus-lib",
     )

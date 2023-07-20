@@ -86,7 +86,7 @@ void WMBusComponent::update() {
         }
       }
       if (selected_driver->get_value(frame, value)) {
-        ESP_LOGI(TAG, "Value from telegram [0x%08X]: %l", meter_id, value);
+        ESP_LOGI(TAG, "Value from telegram [0x%08X]: %f", meter_id, value);
       }
       else {
         ESP_LOGE(TAG, "Can't get value from telegram for ID [0x%08X] '%s'", meter_id, selected_driver->get_name().c_str());

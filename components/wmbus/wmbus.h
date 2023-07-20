@@ -74,6 +74,7 @@ class WMBusComponent : public PollingComponent {
     uint32_t led_blink_time_{0};
     uint32_t led_on_millis_{0};
     bool led_on_{false};
+    bool meter_telegram_{false};
 };
 
 }  // namespace wmbus

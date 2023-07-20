@@ -41,7 +41,6 @@ void WMBusComponent::setup() {
 
 void WMBusComponent::update() {
   this->led_handler();
-  ESP_LOGI(TAG, "Aqq %d", 123);
   if (true) {
     std::vector<unsigned char> frame;
     if (this->meter_telegram_) {
@@ -61,6 +60,32 @@ void WMBusComponent::update() {
 
     ESP_LOGI(TAG, "Meter ID [0x%08X] T: %s", meter_id, telegram.c_str());
     this->led_blink();
+    
+    if (this->wmbus_listeners_.count(meter_id) > 0) {
+      auto *sensor = this->wmbus_listeners_[meter_id];
+      auto selected_driver = this->drivers_[sensor->type];
+      ESP_LOGI(TAG, "Using driver '%s' for ID [0x%08X] T: %s", selected_driver->get_name().c_str(), meter_id, telegram.c_str());
+      if (sensor->key.size()) {
+        if (this->decrypt_telegram(frame, sensor->key)) {
+          std::string decrypted_telegram = format_hex_pretty(frame);
+          decrypted_telegram.erase(std::remove(decrypted_telegram.begin(), decrypted_telegram.end(), '.'), decrypted_telegram.end());
+          ESP_LOGD(TAG, "Decrypted T : %s", decrypted_telegram.c_str());
+        }
+        else {
+          std::string decrypted_telegram = format_hex_pretty(frame);
+          decrypted_telegram.erase(std::remove(decrypted_telegram.begin(), decrypted_telegram.end(), '.'), decrypted_telegram.end());
+          std::string key = format_hex_pretty(sensor->key);
+          key.erase(std::remove(key.begin(), key.end(), '.'), key.end());
+          if (key.size()) {
+            key.erase(key.size() - 5);
+          }
+          ESP_LOGE(TAG, "Something was not OK during decrypting telegram for ID [0x%08X] '%s' key: '%s'", meter_id, selected_driver->get_name().c_str(), key.c_str());
+          //ESP_LOGE(TAG, "T : %s", telegram.c_str());
+          //ESP_LOGE(TAG, "T': %s", decrypted_telegram.c_str());
+        }
+      }
+      //
+    }
   }
 }
 

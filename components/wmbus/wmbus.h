@@ -37,13 +37,13 @@ struct Cc1101 {
   InternalGPIOPin *gdo2{nullptr};
 };
 
-class WMBusComponent : public Component {
+class WMBusComponent : public PollingComponent {
   public:
     WMBusComponent();
     ~WMBusComponent();
 
     void setup() override;
-    void loop() override;
+    void update() override;
     void dump_config() override;
     float get_setup_priority() const override { return setup_priority::LATE; }
     void set_led_pin(GPIOPin *led) { this->led_pin_ = led; }

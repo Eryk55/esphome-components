@@ -128,11 +128,11 @@ bool WMBusComponent::decrypt_telegram(std::vector<unsigned char> &telegram, std:
     offset = 23;
 
     for (int j=0; j<2; ++j) {
-      iv[i++] = telegram[2+j];
+      iv[i++] = telegram[15+j];
     }
     
     for (int j=0; j<6; ++j) {
-      iv[i++] = telegram[11+j];
+      iv[i++] = telegram[4+j];
     }
     
     // ACC

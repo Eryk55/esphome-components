@@ -17,13 +17,6 @@ void WMBusComponent::setup() {
     led_on_ = false;
   }
   memset(this->mb_packet_, 0, sizeof(this->mb_packet_));
-  if (!rf_mbus_init(this->spi_conf_.mosi->get_pin(), this->spi_conf_.miso->get_pin(),
-                    this->spi_conf_.clk->get_pin(), this->spi_conf_.cs->get_pin(),
-                    this->spi_conf_.gdo0->get_pin(), this->spi_conf_.gdo2->get_pin())) {
-    this->mark_failed();
-    ESP_LOGE(TAG, "CC1101 initialization failed.");
-    return;
-  }
 
   this->add_driver(new Elf());
   this->add_driver(new Izar());
@@ -50,7 +43,7 @@ void WMBusComponent::loop() {
   this->led_handler();
   int8_t rssi_dbm{0};
   uint8_t lqi{0};
-  if (rf_mbus_task(this->mb_packet_, rssi_dbm, lqi, this->spi_conf_.gdo0->get_pin(), this->spi_conf_.gdo2->get_pin())) {
+  if (false) {
     uint8_t len_without_crc = crcRemove(this->mb_packet_, packetSize(this->mb_packet_[0]));
     std::vector<unsigned char> frame(this->mb_packet_, this->mb_packet_ + len_without_crc);
     std::string telegram = format_hex_pretty(frame);

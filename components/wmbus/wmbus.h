@@ -13,7 +13,6 @@
 #include "crc.hpp"
 #include "mbus_packet.hpp"
 #include "utils.hpp"
-#include "wmbus_utils.hpp"
 
 #include "drivers.h"
 

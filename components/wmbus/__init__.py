@@ -27,7 +27,7 @@ CODEOWNERS = ["@SzczepanLeon"]
 AUTO_LOAD = ["sensor"]
 
 wmbus_ns = cg.esphome_ns.namespace('wmbus')
-WMBusComponent = wmbus_ns.class_('WMBusComponent', cg.Component)
+WMBusComponent = wmbus_ns.class_('WMBusComponent', cg.PollingComponent)
 
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(WMBusComponent),
@@ -40,7 +40,7 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_LED_PIN): pins.gpio_output_pin_schema,
     cv.Optional(CONF_LED_BLINK_TIME, default="900ms"): cv.positive_time_period,
     cv.Optional(CONF_LOG_UNKNOWN, default=True): cv.boolean,
-})
+}).extend(cv.polling_component_schema("60s"))
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
@@ -66,5 +66,5 @@ async def to_code(config):
     cg.add_library(
         None,
         None,
-        "https://github.com/Eryk55/wMbus-lib@1.1.1",
+        "https://github.com/SzczepanLeon/wMbus-lib#1.2.12",
     )
